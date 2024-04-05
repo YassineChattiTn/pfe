@@ -1,11 +1,36 @@
 const Panier = require("../models/Panier");
+const Article = require("../models/Article");
+const User = require("../models/User");
 
 /**creation du panier */
 
 const addPanier = async (req, res) => {
   try {
-    data = req.body;
-    panier = new Panier(data);
+    const {
+      clientId,
+      articleId,
+      referencePanier,
+      quantity,
+      nameClient,
+      nameArticle,
+    } = req.body;
+    article = await Article.findById(articleId);
+    client = await User.findById(clientId);
+    if (!article) {
+      return res.status(404).send(error);
+    }
+    total = parseFloat(article.price) * quantity;
+    nameA = article.name;
+    nameC = client.name;
+    const panier = new Panier({
+      referencePanier,
+      clientId,
+      articleId,
+      quantity,
+      Total: total,
+      nameClient: nameC,
+      nameArticle: nameA,
+    });
     savedPanier = await panier.save();
     res.status(200).send(savedPanier);
   } catch (error) {

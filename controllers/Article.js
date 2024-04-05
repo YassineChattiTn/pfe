@@ -4,11 +4,12 @@ const Article = require("../models/Article");
 const addArticle = async (req, res) => {
   try {
     data = req.body;
-    article = new Article(data);
-    savedArticle = await article.save();
+
+    const article = new Article(data);
+    const savedArticle = await article.save();
     res.status(200).send(savedArticle);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(400).send(error);
   }
 };
 
@@ -63,10 +64,42 @@ const deleteArticle = async (req, res) => {
   }
 };
 
+/**modifier l'etat du stock a non disponible */
+
+const updateArticleToIndisponible = async (req, res) => {
+  try {
+    myId = req.params.id;
+    data = { stock: "non disponible" };
+    article = await Article.findByIdAndUpdate({ _id: myId }, data);
+    res.status(200).send(article);
+  } catch (error) {
+    console.log(error);
+    console.log("error while updating article's stock");
+    res.status(400).send(error);
+  }
+};
+
+/**modifier l'etat du stock a disponible */
+
+const updateArticleToDisponible = async (req, res) => {
+  try {
+    myId = req.params.id;
+    data = { stock: "disponible" };
+    article = await Article.findByIdAndUpdate({ _id: myId }, data);
+    res.status(200).send(article);
+  } catch (error) {
+    console.log(error);
+    console.log("error while updating article's stock");
+    res.status(400).send(error);
+  }
+};
+
 module.exports = {
   getArticles,
   addArticle,
   updateArticle,
   getArticleId,
   deleteArticle,
+  updateArticleToIndisponible,
+  updateArticleToDisponible,
 };

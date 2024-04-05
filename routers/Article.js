@@ -9,6 +9,8 @@ const {
   updateArticle,
   getArticleId,
   deleteArticle,
+  updateArticleToIndisponible,
+  updateArticleToDisponible,
 } = require("../controllers/Article");
 
 /**creation d'un article */
@@ -25,5 +27,12 @@ router.get("/getArticle/:id", isAuth, getArticleId);
 
 //**effacer l'article' */
 router.delete("/deleteArticle/:id", isAuth, deleteArticle);
+
+/**updating article stock to indisponible */
+router.put("/updateArticleStock/:id", isAuth, updateArticleToIndisponible);
+
+/**updating article stock to disponible */
+
+router.put("/updateArticleStockDispo/:id", isAuth, updateArticleToDisponible);
 
 module.exports = router;
